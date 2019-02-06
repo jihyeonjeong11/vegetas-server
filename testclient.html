@@ -1,0 +1,44 @@
+!<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+    <input id="email" type="text" placeholder="email"></input>
+    <input id="password" type="text" placeholder="password"></input>
+    <button id="joinButton" value='join'></button>
+</body>
+    
+</body>
+</html>
+
+<script>
+var email = document.querySelector('#email')
+var password = document.querySelector('#password')
+var joinButton = document.querySelector('#joinButton')
+
+joinButton.addEventListener("click", handleJoin, false);
+
+
+function handleJoin() {
+  var id = email.value;
+  var pwValue = password.value;
+  var obj = {email: id, password: pwValue};
+  console.log(id, pwValue);
+  window.fetch('http://localhost:3001/signup',{
+  method: 'POST', // or 'PUT'
+  body: JSON.stringify(obj), // data can be `string` or {object}!
+  headers:{
+    'Content-Type': 'application/json'
+    }
+  })
+
+}
+
+
+
+</script>

@@ -29,7 +29,7 @@ function handleJoin() {
   var pwValue = password.value;
   var obj = {email: id, password: pwValue};
   console.log(id, pwValue);
-  window.fetch('http://localhost:3001/signup',{
+  window.fetch('http://ec2-54-180-147-212.ap-northeast-2.compute.amazonaws.com:3001/signup',{
   method: 'POST', // or 'PUT'
   body: JSON.stringify(obj), // data can be `string` or {object}!
   headers:{

@@ -4,8 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
-
+var bodyParser = require('body-parser');
+const db = require('./models');
+const users = require('./models').users;
 global.storage = [1];
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -52,5 +55,7 @@ app.use(function(err, req, res, next) {
 */
 app.listen(3001,
     console.log('activated'))
+    console.log(users)
+    
 
 module.exports = app;

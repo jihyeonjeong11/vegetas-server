@@ -1,0 +1,111 @@
+!<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+    <input id="name" type="text" placeholder="name"></input>
+    <input id="address" type="text" placeholder="address"></input>
+    <input id="latitude" type="text" placeholder="latitude"></input>
+    <input id="longitude" type="text" placeholder="longitude"></input>
+    <input id="phonenumber" type="text" placeholder="phonenumber"></input>
+    <input id="menu" type="text" placeholder="menu"></input>
+    <input id="imgURL" type="text" placeholder="imgURL"></input>
+ 
+    <select id="select">
+      <option value="비건">비건</option>
+      <option value="락토">락토</option>
+      <option value="오보">오보</option>
+      <option value="락토오보">락토오보</option>
+      <option value="페스코">페스코</option>
+      <option value="폴로">폴로</option>
+    </select>
+    <button id="sendButton" value='level' style="padding:15px;">vegLevel</button>
+
+</body>
+    
+</body>
+</html>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  
+  console.log(document.querySelector('#name').value)
+var restname = document.querySelector('#name');
+var restaddress = document.querySelector('#address');
+var restlatitude = document.querySelector('#latitude');
+var restlongitude = document.querySelector('#longitude');
+var restphonenumber = document.querySelector('#phonenumber');
+var restmenu = document.querySelector('#menu');
+var restimgURL = document.querySelector('#imgURL');
+var select = document.querySelector('#select');
+
+var sendButton = document.querySelector('#sendButton');
+
+axios.post('http://52.79.109.78:3000/getRes', {
+    vegLevel: '락토',
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+/*
+var req = JSON.stringify({"vegLevel": "비건"})
+  window.fetch('http://52.79.109.78:3000/getRes',{
+  method: 'POST', // or 'PUT'
+  body: '{"vegLevel": "비건"}', // data can be `string` or {object}!
+  headers:{
+    'Content-Type': 'application/json'
+    }
+  }).then(res=>res.json())
+    .then(json=>console.log(json))
+*/
+sendButton.addEventListener("click", handleSend, false);
+
+
+
+function handleSend() {
+  var name = restname.value;
+  console.log(name)
+  var address = restaddress.value;
+  var latitude = restlatitude.value;
+  var longitude = restlongitude.value;
+  var phoneNumber = restphonenumber.value;
+  var menu = restmenu.value;
+  var imgURL = restimgURL.value;
+  var vegLevel = select.value;
+  var obj = {
+    name: name, 
+    address: address, 
+    latitude: latitude,
+    longitude: longitude,
+    phonenumber: phonenumber,
+    menu: menu,
+    vegLevel: select.value,
+    imgURL: imgURL
+
+  };
+
+  window.fetch('http://localhost:3001/addToDB',{
+  method: 'POST', // or 'PUT'
+  body: JSON.stringify(obj), // data can be `string` or {object}!
+  headers:{
+    'Content-Type': 'application/json'
+    }
+  }).then(result =>result.json())
+    .then(json => console.log(json))
+     
+  
+  .catch(err => console.log(err))
+
+
+}
+
+//http://ec2-54-180-147-212.ap-northeast-2.compute.amazonaws.com:3001/signup
+
+</script>

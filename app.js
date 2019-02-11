@@ -6,15 +6,16 @@ var logger = require('morgan');
 var cors = require('cors');
 var bodyParser = require('body-parser');
 const db = require('./models');
-const users = require('./models').users;
+const user = require('./models').user;
 global.storage = [1];
 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var signUpRouter = require('./routes/signup');
-
-
+var addToDBRouter = require('./routes/addToDB');
+var tokenRouter = require('./routes/token');
+var verifyRouter = require('./routes/verify');
 
 
 var app = express();
@@ -36,6 +37,9 @@ app.use(cookieParser());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/signup', signUpRouter);
+app.use('/addToDB', addToDBRouter);
+app.use('/token', tokenRouter);
+app.use('/verify', verifyRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -55,7 +59,7 @@ app.use(function(err, req, res, next) {
 */
 app.listen(3001,
     console.log('activated'))
-    console.log(users)
+
     
 
 module.exports = app;

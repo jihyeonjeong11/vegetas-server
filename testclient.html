@@ -8,37 +8,149 @@
 </head>
 <body>
 
-    <input id="email" type="text" placeholder="email"></input>
+    <input id="email" type="text" placeholder="email" ></input>
     <input id="password" type="text" placeholder="password"></input>
-    <button id="joinButton" value='join'></button>
+    <button id="joinButton" value='join' style="padding:15px;">Join</button>
+    <button id="signInButton" value='signIn' style="padding:15px;">signIn</button>
+    <select id="select">
+      <option value="비건">비건</option>
+      <option value="락토">락토</option>
+      <option value="오보">오보</option>
+      <option value="락토오보">락토오보</option>
+      <option value="페스코">페스코</option>
+      <option value="폴로">폴로</option>
+    </select>
+    <button id="levelButton" value='level' style="padding:15px;">vegLevel</button>
+    <button id="tokenButton" value='level' style="padding:15px;">token!</button>
+    <button id="verifyButton" value='level' style="padding:15px;">verify!</button>
+
 </body>
     
 </body>
 </html>
 
 <script>
+var token;
 var email = document.querySelector('#email')
 var password = document.querySelector('#password')
 var joinButton = document.querySelector('#joinButton')
+var select = document.querySelector('#select')
+var levelButton = document.querySelector('#levelButton')
+var name = 'aaaa'
+var signinButton = document.querySelector('#signInButton')
+var tokenButton = document.querySelector('#tokenButton');
+var verifyButton = document.querySelector('#verifyButton');
+
+tokenButton.addEventListener("click", tokenHandler, false);
+verifyButton.addEventListener("click", verifyHandler, false);
+
+function verifyHandler() {
+  window.fetch('http://localhost:3001/verify',{
+  method: 'POST', // or 'PUT'
+  body: JSON.stringify({token: token}), // data can be `string` or {object}!
+  headers:{
+    'Content-Type': 'application/json'
+    }
+  }).then(result => {
+    if(result.status === 201) {
+      alert('token is valid');
+    } else {
+      alert('token expired');
+    }
+  }).catch(err => alert(err));
+    
+}
+
+
+function tokenHandler() {
+  var name={name: 'something'};
+  window.fetch('http://localhost:3001/token',{
+  method: 'POST', // or 'PUT'
+  body: JSON.stringify(name), // data can be `string` or {object}!
+  headers:{
+    'Content-Type': 'application/json'
+    }
+  }).then(res =>{
+    console.log(res)
+    return res.json()
+      }).then(json => {
+        token = json;
+        console.log(json)
+      })
+
+      
+}
+
+signinButton.addEventListener("click", handleSignIn, false);
+
+levelButton.addEventListener("click", handleVegLevel, false);
 
 joinButton.addEventListener("click", handleJoin, false);
 
-
-function handleJoin() {
+function handleSignIn() {
   var id = email.value;
   var pwValue = password.value;
-  var obj = {email: id, password: pwValue};
+  var obj = {email: id, password: pwValue, name: 'name'};
   console.log(id, pwValue);
-  window.fetch('http://ec2-54-180-147-212.ap-northeast-2.compute.amazonaws.com:3001/signup',{
+  window.fetch('http://52.79.109.78:3000/signIn',{
+  method: 'POST', // or 'PUT'
+  body: JSON.stringify(obj), // data can be `string` or {object}!
+  headers:{
+    'Content-Type': 'application/json'
+    }
+  }).then(result =>{
+      if(result.status === 200){
+      console.log('success', result.status);
+      }
+      else {
+        if(result.status === 401){
+          console.log('failed, wrong password', result.status)
+        } else {
+          console.log('unregistered user', result.status)
+        }
+      }
+      
+  }).catch(err => console.log(err))
+
+
+
+}
+
+function handleVegLevel() {
+  var vegLevel = select.value;
+  var id = email.value;
+  var obj = {email: id, vegLevel: vegLevel,}
+  console.log(vegLevel)
+  window.fetch('http://52.79.109.78:3000/signUp',{
   method: 'POST', // or 'PUT'
   body: JSON.stringify(obj), // data can be `string` or {object}!
   headers:{
     'Content-Type': 'application/json'
     }
   })
-
 }
 
 
+function handleJoin() {
+  var id = email.value;
+  var pwValue = password.value;
+  var obj = {email: id, password: pwValue, name: 'name'};
+  console.log(id, pwValue);
+  window.fetch('http://52.79.109.78:3000/signUp',{
+  method: 'POST', // or 'PUT'
+  body: JSON.stringify(obj), // data can be `string` or {object}!
+  headers:{
+    'Content-Type': 'application/json'
+    }
+  }).then(result =>{
+      console.log('success', result.status);
+     
+  })
+  .catch(err => console.log(err))
+
+
+}
+
+//http://ec2-54-180-147-212.ap-northeast-2.compute.amazonaws.com:3001/signup
 
 </script>
